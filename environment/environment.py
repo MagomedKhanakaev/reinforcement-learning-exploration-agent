@@ -21,6 +21,12 @@ class Environment:
         self.current_position, self.goal = start_and_goal(self.grid)
         self.count_steps = 0
         self.max_steps = 4 * self.size * self.size
+        self.actions = {
+            "UP" : (-1, 0), 
+            "DOWN" : (1, 0), 
+            "RIGHT" : (0, 1), 
+            "LEFT" : (0, -1)
+        }
 
     def reset(self):
         self.grid = create_grid(self.size)
@@ -30,37 +36,23 @@ class Environment:
         return self.current_position
 
     def step(self, action):
-        x, y = self.current_position
-        n = self.size
-        reward = 0
-        done = False
-        if action == "RIGHT":
-            if y+1<n and self.grid[x, y+1] == 0:
-                self.current_position = x, y+1
-                reward = -1
-            else:
-                reward = -5
-        elif action == "LEFT":
-            if y-1>=0 and self.grid[x, y-1] == 0:
-                self.current_position = x, y-1
-                reward = -1
-            else:
-                reward = -5
-        elif action == "DOWN":
-            if x+1<n and self.grid[x+1, y] == 0:
-                self.current_position = x+1, y
-                reward = -1
-            else:
-                reward = -5
-        elif action == "UP":
-            if x-1>=0 and self.grid[x-1, y] == 0:
-                self.current_position = x-1, y
-                reward = -1
-            else:
-                reward = -5
-        else:
+        if action not in self.actions:
             raise ValueError("Action must be RIGHT, LEFT, UP or DOWN")
+
+        x, y = self.current_position
+        dx, dy = self.actions[action]
+        new_position = (x + dx, y + dy)
+        x1, y1 = new_position
+        reward = -5
+        done = False
+
+        if 0 <= x1 < self.size and 0 <= y1 < self.size:
+            if self.grid[x1, y1] == 0:
+                self.current_position = new_position
+                reward = -1
+
         self.count_steps += 1
+
         if self.current_position == self.goal:
             reward = 100
             done = True
@@ -79,6 +71,7 @@ def add_obstacles(grid, density=0.2):
     coordinates = [(i, j) for i in range(grid.shape[0]) for j in range(grid.shape[1])]
     num_obstacles = int(density * len(coordinates))
     obstacles = random.sample(coordinates, num_obstacles)
+
     for x, y in obstacles:
         grid[x, y] = 1
     return grid
@@ -93,5 +86,6 @@ def display_grid(grid, current_position, goal):
     display[grid == 1] = "#"
     display[current_position] = "A"
     display[goal] = "G"
+
     for row in display:
         print(" ".join(row))
