@@ -18,7 +18,8 @@ class Environment:
         self.density = density
         self.grid = create_grid(size)
         self.grid = add_obstacles(self.grid, density)
-        self.current_position, self.goal = start_and_goal(self.grid)
+        self.start, self.goal = start_and_goal(self.grid)
+        self.current_position = self.start
         self.count_steps = 0
         self.max_steps = 4 * self.size * self.size
         self.actions = {
@@ -31,8 +32,14 @@ class Environment:
     def reset(self):
         self.grid = create_grid(self.size)
         self.grid = add_obstacles(self.grid, self.density)
-        self.current_position, self.goal = start_and_goal(self.grid)
+        self.start, self.goal = start_and_goal(self.grid)
+        self.current_position = self.start
         self.count_steps = 0
+        return self.current_position
+    
+    def reset_episode(self):
+        self.count_steps = 0
+        self.current_position = self.start
         return self.current_position
 
     def step(self, action):
