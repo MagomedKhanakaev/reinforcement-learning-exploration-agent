@@ -2,22 +2,22 @@ import numpy as np
 import random
 
 class Environment:
-    def __init__(self, size=10, density=0.2):
+    def __init__(self, size=10, obstacle_density=0.2):
         if not isinstance(size, int) or isinstance(size, bool):
             raise TypeError("Size must be an integer")
-        if not isinstance(density, (int, float)) or isinstance(density, bool):
+        if not isinstance(obstacle_density, (int, float)) or isinstance(obstacle_density, bool):
             raise TypeError("Density must be a number")
         if size <= 0:
             raise ValueError("Size must be a positive integer")
-        if not (0 <= density <= 1):
+        if not (0 <= obstacle_density <= 1):
             raise ValueError("Density must be between 0 and 1")
-        if size * size - int(density * size * size) < 2:
+        if size * size - int(obstacle_density * size * size) < 2:
             raise ValueError("Not enough free space for start and goal positions")
         
         self.size = size
-        self.density = density
+        self.obstacle_density = obstacle_density
         self.grid = create_grid(size)
-        self.grid = add_obstacles(self.grid, density)
+        self.grid = add_obstacles(self.grid, obstacle_density)
         self.start, self.goal = start_and_goal(self.grid)
         self.current_position = self.start
         self.count_steps = 0
@@ -31,7 +31,7 @@ class Environment:
 
     def reset(self):
         self.grid = create_grid(self.size)
-        self.grid = add_obstacles(self.grid, self.density)
+        self.grid = add_obstacles(self.grid, self.obstacle_density)
         self.start, self.goal = start_and_goal(self.grid)
         self.current_position = self.start
         self.count_steps = 0
@@ -74,19 +74,53 @@ def create_grid(size = 10):
     grid = np.zeros((size, size), dtype=int)
     return grid
 
-def add_obstacles(grid, density=0.2):
+def add_obstacles(grid, obstacle_density=0.2):
     coordinates = [(i, j) for i in range(grid.shape[0]) for j in range(grid.shape[1])]
-    num_obstacles = int(density * len(coordinates))
+    num_obstacles = int(obstacle_density * len(coordinates))
     obstacles = random.sample(coordinates, num_obstacles)
 
     for x, y in obstacles:
         grid[x, y] = 1
     return grid
 
-def start_and_goal(grid):
-    coordinates = [(i, j) for i in range(grid.shape[0]) for j in range(grid.shape[1]) if grid[i,j] == 0]
-    start, goal = random.sample(coordinates, 2)
-    return start, goal
+def start_and_goal(grid, min_distance=None):
+
+    free_cells = [
+        (i, j)
+        for i in range(grid.shape[0])
+        for j in range(grid.shape[1])
+        if grid[i, j] == 0 
+    ]
+
+    border_cells = [
+        (i, j)
+        for i, j in free_cells
+        if i in (0, grid.shape[0] - 1) or j in (0, grid.shape[1] - 1)
+    ]
+
+    if not border_cells:
+        raise ValueError("No free border cell available for the start position")
+
+    if min_distance is None:
+        min_distance = grid.shape[0]
+
+    random.shuffle(border_cells)
+
+    for start in border_cells:
+        valid_goals = [
+            goal
+            for goal in free_cells
+            if goal != start
+            and abs(start[0] - goal[0]) + abs(start[1] - goal[1])
+            >= min_distance
+        ]
+
+        if valid_goals:
+            return start, random.choice(valid_goals)
+
+    raise ValueError(
+        "No valid start-goal pair for the requested minimum distance"
+    )
 
 def display_grid(grid, current_position, goal):
     display = np.full(grid.shape, ".", dtype="<U1")
