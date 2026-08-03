@@ -5,14 +5,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-FIGURES_DIR = Path(__file__).parent / "figures"
-
-
 def moving_average(
     values: Sequence[float],
     window: int = 100,
 ) -> np.ndarray:
-    """Compute a moving average over a sequence."""
     array = np.asarray(values, dtype=float)
 
     if array.size == 0:
@@ -24,22 +20,24 @@ def moving_average(
     weights = np.ones(window, dtype=float) / window
     return np.convolve(array, weights, mode="valid")
 
+
 def _plot_metric(
     values: Sequence[float],
     *,
     title: str,
     ylabel: str,
     filename: str,
+    save_dir: Path,
     window: int = 100,
     raw_label: str = "Episode values",
     average_label: str | None = None,
     y_limits: tuple[float, float] | None = None,
 ) -> None:
-    """Plot one metric and save it to the figures directory."""
+
     values_array = np.asarray(values, dtype=float)
     average = moving_average(values_array, window)
 
-    FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+    save_dir.mkdir(parents=True, exist_ok=True)
 
     raw_episodes = np.arange(1, len(values_array) + 1)
 
@@ -79,7 +77,7 @@ def _plot_metric(
     plt.legend()
     plt.tight_layout()
 
-    output_path = FIGURES_DIR / filename
+    output_path = save_dir / filename
     plt.savefig(output_path, dpi=200, bbox_inches="tight")
     plt.close()
 
@@ -88,35 +86,40 @@ def _plot_metric(
 
 def plot_rewards(
     episode_rewards: Sequence[float],
+    save_dir: Path,
     window: int = 100,
-) -> None:
-    """Plot the total reward obtained during every episode."""
+):
     _plot_metric(
         values=episode_rewards,
         title="Q-learning reward during training",
         ylabel="Total reward",
         filename="q_learning_rewards.png",
+        save_dir=save_dir,
         window=window,
     )
 
 
 def plot_steps(
     episode_steps: Sequence[int],
+    save_dir: Path,
     window: int = 100,
-) -> None:
-    """Plot the number of steps taken during every episode."""
+):
     _plot_metric(
         values=episode_steps,
         title="Number of steps per episode",
         ylabel="Steps",
         filename="q_learning_steps.png",
+        save_dir=save_dir,
         window=window,
     )
 
 
 def plot_epsilons(
-    episode_epsilons,
-) -> None:
+    episode_epsilons: Sequence[float],
+    save_dir: Path,
+):
+    save_dir.mkdir(parents=True, exist_ok=True)
+
     plt.figure(figsize=(11, 6))
 
     plt.plot(
@@ -133,34 +136,39 @@ def plot_epsilons(
     plt.grid(alpha=0.25)
     plt.tight_layout()
 
-    output_path = FIGURES_DIR / "q_learning_epsilons.png"
+    output_path = save_dir / "q_learning_epsilons.png"
     plt.savefig(output_path, dpi=200, bbox_inches="tight")
     plt.close()
 
     print(f"Saved figure: {output_path}")
 
+
 def plot_traps(
-    episode_traps,
-    window=100,
+    episode_traps: Sequence[int],
+    save_dir: Path,
+    window: int = 100,
 ):
     _plot_metric(
         values=episode_traps,
         title="Traps triggered per episode",
         ylabel="Triggered traps",
         filename="q_learning_traps.png",
+        save_dir=save_dir,
         window=window,
     )
 
+
 def plot_collisions(
     episode_collisions: Sequence[int],
+    save_dir: Path,
     window: int = 100,
-) -> None:
-    """Plot the number of invalid movements during every episode."""
+):
     _plot_metric(
         values=episode_collisions,
         title="Number of collisions per episode",
         ylabel="Collisions",
         filename="q_learning_collisions.png",
+        save_dir=save_dir,
         window=window,
     )
 
@@ -171,29 +179,35 @@ def plot_training_results(
     episode_epsilons: Sequence[float],
     episode_collisions: Sequence[int],
     episode_traps: Sequence[int],
+    save_dir: Path,
     window: int = 100,
-) -> None:
-    """Generate all plots for one Q-learning training run."""
+):
 
     plot_rewards(
         episode_rewards,
+        save_dir=save_dir,
         window=window,
     )
 
     plot_steps(
         episode_steps,
+        save_dir=save_dir,
         window=window,
     )
 
     plot_epsilons(
-        episode_epsilons
+        episode_epsilons,
+        save_dir=save_dir,
     )
 
     plot_collisions(
         episode_collisions,
+        save_dir=save_dir,
         window=window,
     )
+
     plot_traps(
         episode_traps,
+        save_dir=save_dir,
         window=window,
     )
