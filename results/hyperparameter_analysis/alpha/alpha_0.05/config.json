@@ -1,0 +1,12 @@
+{
+    "episodes": 5000,
+    "size": 15,
+    "obstacle_density": 0.12,
+    "trap_density": 0.04,
+    "mud_density": 0.1,
+    "alpha": 0.05,
+    "gamma": 0.95,
+    "epsilon": 1.0,
+    "seed": 4,
+    "moving_average_window": 100
+}

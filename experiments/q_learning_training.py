@@ -4,8 +4,8 @@ from pathlib import Path
 
 import numpy as np
 
-from environment.advanced_environment import AdvancedEnvironment
 from agents.q_learning_agent import QLearningAgent
+from environment.advanced_environment import AdvancedEnvironment
 from results.plots import plot_training_results
 
 
@@ -18,12 +18,14 @@ def train(
     alpha=0.1,
     gamma=0.95,
     epsilon=1.0,
+    seed=4,
 ):
     env = AdvancedEnvironment(
         size=size,
         obstacle_density=obstacle_density,
         trap_density=trap_density,
         mud_density=mud_density,
+        seed=seed,
     )
 
     agent = QLearningAgent(
@@ -40,12 +42,12 @@ def train(
         "traps": [],
     }
 
-    for episode in range(episodes):
+    for _ in range(episodes):
         state = env.reset_episode()
         done = False
 
         total_reward = 0
-        collisions = 0
+        collision_count = 0
         trap_count = 0
 
         while not done:
@@ -62,7 +64,7 @@ def train(
             )
 
             if info["collision"]:
-                collisions += 1
+                collision_count += 1
 
             if info["trap"]:
                 trap_count += 1
@@ -73,7 +75,7 @@ def train(
         metrics["rewards"].append(total_reward)
         metrics["steps"].append(env.count_steps)
         metrics["epsilons"].append(agent.epsilon)
-        metrics["collisions"].append(collisions)
+        metrics["collisions"].append(collision_count)
         metrics["traps"].append(trap_count)
 
         agent.decay_epsilon()
@@ -89,7 +91,7 @@ def evaluate(agent, env):
     done = False
 
     total_reward = 0
-    collisions = 0
+    collision_count = 0
     trap_count = 0
 
     while not done:
@@ -98,7 +100,7 @@ def evaluate(agent, env):
         next_state, reward, done, info = env.step(action)
 
         if info["collision"]:
-            collisions += 1
+            collision_count += 1
 
         if info["trap"]:
             trap_count += 1
@@ -111,7 +113,7 @@ def evaluate(agent, env):
     results = {
         "reward": total_reward,
         "steps": env.count_steps,
-        "collisions": collisions,
+        "collisions": collision_count,
         "traps": trap_count,
     }
 
@@ -124,54 +126,44 @@ def evaluate(agent, env):
 
     return results
 
+
 def save_experiment(
-    experiment_name,
+    experiment_dir,
     agent,
     env,
     config,
     evaluation_results,
+    metrics,
 ):
-    experiment_dir = (
-        Path("results")
-        / "experiments"
-        / experiment_name
-    )
+    experiment_dir = Path(experiment_dir)
+    experiment_dir.mkdir(parents=True, exist_ok=True)
 
-    experiment_dir.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
+    with open(
+        experiment_dir / "config.json",
+        "w",
+        encoding="utf-8",
+    ) as file:
+        json.dump(config, file, indent=4)
 
-    config_path = experiment_dir / "config.json"
+    with open(
+        experiment_dir / "evaluation.json",
+        "w",
+        encoding="utf-8",
+    ) as file:
+        json.dump(evaluation_results, file, indent=4)
 
-    with open(config_path, "w", encoding="utf-8") as file:
-        json.dump(
-            config,
-            file,
-            indent=4,
-        )
+    with open(
+        experiment_dir / "metrics.json",
+        "w",
+        encoding="utf-8",
+    ) as file:
+        json.dump(metrics, file, indent=4)
 
-    evaluation_path = experiment_dir / "evaluation.json"
-
-    with open(evaluation_path, "w", encoding="utf-8") as file:
-        json.dump(
-            evaluation_results,
-            file,
-            indent=4,
-        )
-
-    q_table_path = experiment_dir / "q_table.pkl"
-
-    with open(q_table_path, "wb") as file:
-        pickle.dump(
-            agent.q_table,
-            file,
-        )
-
-    grid_path = experiment_dir / "grid.npy"
+    with open(experiment_dir / "q_table.pkl", "wb") as file:
+        pickle.dump(agent.q_table, file)
 
     np.save(
-        grid_path,
+        experiment_dir / "grid.npy",
         env.grid,
     )
 
@@ -179,10 +171,11 @@ def save_experiment(
 
 
 def main():
-    experiment_name = "medium"
+    experiment_name = "advanced"
+
     experiment_dir = (
         Path("results")
-        / "experiments"
+        / "environment_comparison"
         / experiment_name
     )
 
@@ -192,9 +185,10 @@ def main():
         "obstacle_density": 0.12,
         "trap_density": 0.04,
         "mud_density": 0.10,
-        "alpha": 0.1,
+        "alpha": 0.10,
         "gamma": 0.95,
         "epsilon": 1.0,
+        "seed": 4,
         "moving_average_window": 100,
     }
 
@@ -207,6 +201,7 @@ def main():
         alpha=config["alpha"],
         gamma=config["gamma"],
         epsilon=config["epsilon"],
+        seed=config["seed"],
     )
 
     plot_training_results(
@@ -225,11 +220,12 @@ def main():
     )
 
     save_experiment(
-        experiment_name=experiment_name,
+        experiment_dir=experiment_dir,
         agent=agent,
         env=env,
         config=config,
         evaluation_results=evaluation_results,
+        metrics=metrics,
     )
 
 

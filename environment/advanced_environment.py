@@ -3,8 +3,8 @@ import numpy as np
 from environment.environment import Environment
 
 class AdvancedEnvironment(Environment):
-    def __init__(self, size=10, obstacle_density=0.2, trap_density=0.05, mud_density=0.10):
-        super().__init__(size, obstacle_density)
+    def __init__(self, size=10, obstacle_density=0.2, trap_density=0.05, mud_density=0.10, seed=None):
+        super().__init__(size, obstacle_density, seed)
         if obstacle_density + trap_density + mud_density > 1:
             raise ValueError("Total density is > 1")
         self.trap_density = trap_density
@@ -51,7 +51,10 @@ class AdvancedEnvironment(Environment):
             else:
                 reward = -6
                 info["collision"] = True
-
+        else:
+            reward = -6
+            info["collision"] = True
+            
         self.count_steps += 1
 
         if self.current_position == self.goal:

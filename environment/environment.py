@@ -2,7 +2,7 @@ import numpy as np
 import random
 
 class Environment:
-    def __init__(self, size=10, obstacle_density=0.2):
+    def __init__(self, size=10, obstacle_density=0.2, seed=None):
         if not isinstance(size, int) or isinstance(size, bool):
             raise TypeError("Size must be an integer")
         if not isinstance(obstacle_density, (int, float)) or isinstance(obstacle_density, bool):
@@ -13,7 +13,11 @@ class Environment:
             raise ValueError("Density must be between 0 and 1")
         if size * size - int(obstacle_density * size * size) < 2:
             raise ValueError("Not enough free space for start and goal positions")
-        
+        self.seed = seed
+
+        if self.seed is not None:
+            random.seed(self.seed)
+            
         self.size = size
         self.obstacle_density = obstacle_density
         self.grid = create_grid(size)
