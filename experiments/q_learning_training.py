@@ -173,11 +173,7 @@ def save_experiment(
 def main():
     experiment_name = "advanced"
 
-    experiment_dir = (
-        Path("results")
-        / "environment_comparison"
-        / experiment_name
-    )
+    experiment_dir = Path("results") / "environment_comparison" / experiment_name
 
     config = {
         "episodes": 5000,

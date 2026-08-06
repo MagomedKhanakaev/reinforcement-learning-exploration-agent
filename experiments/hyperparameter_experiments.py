@@ -7,7 +7,6 @@ from experiments.q_learning_training import (
 )
 from results.plots import plot_training_results
 
-
 BASE_CONFIG = {
     "episodes": 5000,
     "size": 15,
@@ -28,10 +27,7 @@ def run_experiment(
     config,
 ):
     experiment_dir = (
-        Path("results")
-        / "hyperparameter_analysis"
-        / parameter_name
-        / experiment_name
+        Path("results") / "hyperparameter_analysis" / parameter_name / experiment_name
     )
 
     print(f"\nRunning experiment: {experiment_name}")

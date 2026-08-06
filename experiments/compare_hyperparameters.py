@@ -5,11 +5,7 @@ from typing import Sequence
 import matplotlib.pyplot as plt
 import numpy as np
 
-
-RESULTS_DIR = (
-    Path("results")
-    / "hyperparameter_analysis"
-)
+RESULTS_DIR = Path("results") / "hyperparameter_analysis"
 
 ALPHA_DIR = RESULTS_DIR / "alpha"
 GAMMA_DIR = RESULTS_DIR / "gamma"
@@ -35,11 +31,7 @@ def load_metrics(
     base_dir: Path,
     experiment_name: str,
 ) -> dict:
-    metrics_path = (
-        base_dir
-        / experiment_name
-        / "metrics.json"
-    )
+    metrics_path = base_dir / experiment_name / "metrics.json"
 
     with open(metrics_path, "r", encoding="utf-8") as file:
         return json.load(file)
@@ -60,9 +52,7 @@ def compare_experiments(
     y_limits: tuple[float, float] | None = None,
 ) -> None:
     if len(experiment_names) != len(labels):
-        raise ValueError(
-            "Experiment names and labels must have the same length."
-        )
+        raise ValueError("Experiment names and labels must have the same length.")
 
     output_dir.mkdir(
         parents=True,

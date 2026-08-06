@@ -1,11 +1,14 @@
 import numpy as np
 import random
 
+
 class Environment:
     def __init__(self, size=10, obstacle_density=0.2, seed=None):
         if not isinstance(size, int) or isinstance(size, bool):
             raise TypeError("Size must be an integer")
-        if not isinstance(obstacle_density, (int, float)) or isinstance(obstacle_density, bool):
+        if not isinstance(obstacle_density, (int, float)) or isinstance(
+            obstacle_density, bool
+        ):
             raise TypeError("Density must be a number")
         if size <= 0:
             raise ValueError("Size must be a positive integer")
@@ -17,7 +20,7 @@ class Environment:
 
         if self.seed is not None:
             random.seed(self.seed)
-            
+
         self.size = size
         self.obstacle_density = obstacle_density
         self.grid = create_grid(size)
@@ -26,12 +29,7 @@ class Environment:
         self.current_position = self.start
         self.count_steps = 0
         self.max_steps = 4 * self.size * self.size
-        self.actions = {
-            "UP" : (-1, 0), 
-            "DOWN" : (1, 0), 
-            "RIGHT" : (0, 1), 
-            "LEFT" : (0, -1)
-        }
+        self.actions = {"UP": (-1, 0), "DOWN": (1, 0), "RIGHT": (0, 1), "LEFT": (0, -1)}
 
     def reset(self):
         self.grid = create_grid(self.size)
@@ -40,7 +38,7 @@ class Environment:
         self.current_position = self.start
         self.count_steps = 0
         return self.current_position
-    
+
     def reset_episode(self):
         self.count_steps = 0
         self.current_position = self.start
@@ -70,13 +68,15 @@ class Environment:
         elif self.count_steps >= self.max_steps:
             done = True
         return self.current_position, reward, done
-    
+
     def render(self):
         display_grid(self.grid, self.current_position, self.goal)
 
-def create_grid(size = 10):
+
+def create_grid(size=10):
     grid = np.zeros((size, size), dtype=int)
     return grid
+
 
 def add_obstacles(grid, obstacle_density=0.2):
     coordinates = [(i, j) for i in range(grid.shape[0]) for j in range(grid.shape[1])]
@@ -87,13 +87,14 @@ def add_obstacles(grid, obstacle_density=0.2):
         grid[x, y] = 1
     return grid
 
+
 def start_and_goal(grid, min_distance=None):
 
     free_cells = [
         (i, j)
         for i in range(grid.shape[0])
         for j in range(grid.shape[1])
-        if grid[i, j] == 0 
+        if grid[i, j] == 0
     ]
 
     border_cells = [
@@ -115,16 +116,14 @@ def start_and_goal(grid, min_distance=None):
             goal
             for goal in free_cells
             if goal != start
-            and abs(start[0] - goal[0]) + abs(start[1] - goal[1])
-            >= min_distance
+            and abs(start[0] - goal[0]) + abs(start[1] - goal[1]) >= min_distance
         ]
 
         if valid_goals:
             return start, random.choice(valid_goals)
 
-    raise ValueError(
-        "No valid start-goal pair for the requested minimum distance"
-    )
+    raise ValueError("No valid start-goal pair for the requested minimum distance")
+
 
 def display_grid(grid, current_position, goal):
     display = np.full(grid.shape, ".", dtype="<U1")

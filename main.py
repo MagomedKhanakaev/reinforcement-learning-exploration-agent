@@ -11,4 +11,3 @@ print("RIGHT")
 env.step("RIGHT")
 
 env.render()
-

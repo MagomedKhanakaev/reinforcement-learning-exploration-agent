@@ -5,11 +5,7 @@ from typing import Sequence
 import matplotlib.pyplot as plt
 import numpy as np
 
-
-EXPERIMENTS_DIR = (
-    Path("results")
-    / "environment_comparison"
-)
+EXPERIMENTS_DIR = Path("results") / "environment_comparison"
 
 OUTPUT_DIR = EXPERIMENTS_DIR / "comparisons"
 
@@ -31,11 +27,7 @@ def moving_average(
 
 
 def load_metrics(experiment_name: str) -> dict:
-    metrics_path = (
-        EXPERIMENTS_DIR
-        / experiment_name
-        / "metrics.json"
-    )
+    metrics_path = EXPERIMENTS_DIR / experiment_name / "metrics.json"
 
     with open(metrics_path, "r", encoding="utf-8") as file:
         return json.load(file)
@@ -54,9 +46,7 @@ def compare_metric(
     y_limits: tuple[float, float] | None = None,
 ) -> None:
     if len(experiment_names) != len(labels):
-        raise ValueError(
-            "Experiment names and labels must have the same length."
-        )
+        raise ValueError("Experiment names and labels must have the same length.")
 
     OUTPUT_DIR.mkdir(
         parents=True,
