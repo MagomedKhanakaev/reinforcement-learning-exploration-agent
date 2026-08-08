@@ -3,7 +3,12 @@ import random
 
 
 class Environment:
-    def __init__(self, size=10, obstacle_density=0.2, seed=None):
+    def __init__(
+        self,
+        size=10,
+        obstacle_density=0.2,
+        seed=None,
+    ):
         if not isinstance(size, int) or isinstance(size, bool):
             raise TypeError("Size must be an integer")
         if not isinstance(obstacle_density, (int, float)) or isinstance(
@@ -52,7 +57,7 @@ class Environment:
         dx, dy = self.actions[action]
         new_position = (x + dx, y + dy)
         x1, y1 = new_position
-        reward = -5
+        reward = -6
         done = False
 
         if 0 <= x1 < self.size and 0 <= y1 < self.size:

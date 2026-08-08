@@ -2,7 +2,12 @@ import random as rd
 
 
 class QLearningAgent:
-    def __init__(self, alpha, gamma, epsilon):
+    def __init__(
+        self,
+        alpha=0.1,
+        gamma=0.95,
+        epsilon=1.0,
+    ):
         self.alpha = alpha
         self.gamma = gamma
         self.epsilon = epsilon
@@ -26,7 +31,14 @@ class QLearningAgent:
 
         return best_action
 
-    def update_q_table(self, state, action, reward, next_state, done):
+    def update_q_table(
+        self,
+        state,
+        action,
+        reward,
+        next_state,
+        done,
+    ):
 
         old_q = self.q_table[state][action]
 
