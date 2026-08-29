@@ -28,18 +28,18 @@ class Environment:
 
         self.size = size
         self.obstacle_density = obstacle_density
-        self.grid = create_grid(size)
-        self.grid = add_obstacles(self.grid, obstacle_density)
-        self.start, self.goal = start_and_goal(self.grid)
+        self.grid = self.create_grid()
+        self.start, self.goal = self.start_and_goal()
+        self.grid = self.add_obstacles()
         self.current_position = self.start
         self.count_steps = 0
         self.max_steps = 4 * self.size * self.size
         self.actions = {"UP": (-1, 0), "DOWN": (1, 0), "RIGHT": (0, 1), "LEFT": (0, -1)}
 
     def reset(self):
-        self.grid = create_grid(self.size)
-        self.grid = add_obstacles(self.grid, self.obstacle_density)
-        self.start, self.goal = start_and_goal(self.grid)
+        self.grid = self.create_grid()
+        self.start, self.goal = self.start_and_goal()
+        self.grid = self.add_obstacles()
         self.current_position = self.start
         self.count_steps = 0
         return self.current_position
@@ -75,66 +75,55 @@ class Environment:
         return self.current_position, reward, done
 
     def render(self):
-        display_grid(self.grid, self.current_position, self.goal)
+        display = np.full(self.grid.shape, ".", dtype="<U1")
+        display[self.grid == 1] = "#"
+        display[self.current_position] = "A"
+        display[self.goal] = "G"
+
+        for row in display:
+            print(" ".join(row))
 
 
-def create_grid(size=10):
-    grid = np.zeros((size, size), dtype=int)
-    return grid
+    def create_grid(self):
+        self.grid = np.zeros((self.size, self.size), dtype=int)
+        return self.grid
 
 
-def add_obstacles(grid, obstacle_density=0.2):
-    coordinates = [(i, j) for i in range(grid.shape[0]) for j in range(grid.shape[1])]
-    num_obstacles = int(obstacle_density * len(coordinates))
-    obstacles = random.sample(coordinates, num_obstacles)
+    def add_obstacles(self):
+        coordinates = [(i, j) for i in range(self.grid.shape[0]) for j in range(self.grid.shape[1]) if (i, j) not in (self.start, self.goal)]
+        num_obstacles = int(self.obstacle_density * self.grid.shape[0] * self.grid.shape[1])
+        obstacles = random.sample(coordinates, num_obstacles)
 
-    for x, y in obstacles:
-        grid[x, y] = 1
-    return grid
+        for x, y in obstacles:
+           self.grid[x, y] = 1
+        return self.grid
 
 
-def start_and_goal(grid, min_distance=None):
+    def start_and_goal(self, min_distance=None):
 
-    free_cells = [
-        (i, j)
-        for i in range(grid.shape[0])
-        for j in range(grid.shape[1])
-        if grid[i, j] == 0
-    ]
-
-    border_cells = [
-        (i, j)
-        for i, j in free_cells
-        if i in (0, grid.shape[0] - 1) or j in (0, grid.shape[1] - 1)
-    ]
-
-    if not border_cells:
-        raise ValueError("No free border cell available for the start position")
-
-    if min_distance is None:
-        min_distance = grid.shape[0]
-
-    random.shuffle(border_cells)
-
-    for start in border_cells:
-        valid_goals = [
-            goal
-            for goal in free_cells
-            if goal != start
-            and abs(start[0] - goal[0]) + abs(start[1] - goal[1]) >= min_distance
+        border_cells = [
+            (i, j)
+            for i in range(self.size) for j in range(self.size)
+            if i in (0, self.grid.shape[0] - 1) or j in (0, self.grid.shape[1] - 1)
         ]
 
-        if valid_goals:
-            return start, random.choice(valid_goals)
 
-    raise ValueError("No valid start-goal pair for the requested minimum distance")
+        if min_distance is None:
+            min_distance = self.grid.shape[0]
+
+        random.shuffle(border_cells)
+
+        for start in border_cells:
+            valid_goals = [
+                (i, j)
+                for i in range(self.size) for j in range(self.size)
+                if (i, j) != start
+                and abs(start[0] - i) + abs(start[1] - j) >= min_distance
+            ]
+
+            if valid_goals:
+                self.start, self.goal = start, random.choice(valid_goals)
+                return self.start, self.goal
 
 
-def display_grid(grid, current_position, goal):
-    display = np.full(grid.shape, ".", dtype="<U1")
-    display[grid == 1] = "#"
-    display[current_position] = "A"
-    display[goal] = "G"
 
-    for row in display:
-        print(" ".join(row))
