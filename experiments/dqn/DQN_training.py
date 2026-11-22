@@ -82,7 +82,7 @@ def train(
     target_update_freq=500,
     eval_every=100,
     eval_seeds=tuple(range(101, 116)),
-    checkpoint_dir="results/dqn_checkpoints",
+    checkpoint_dir="results/dqn/dqn_checkpoints",
     stack_size=4,
     pool_size=50,
     window_size=5,

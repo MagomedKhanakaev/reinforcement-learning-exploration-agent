@@ -6,7 +6,7 @@ import numpy as np
 import torch
 
 from agents.DQN_agent import DQN_agent
-from experiments.DQN_training import train, evaluate
+from experiments.dqn.DQN_training import train, evaluate
 
 WINDOW_SIZES = [3, 5, 7]
 TRAINING_SEEDS = [4, 104, 204]
@@ -20,7 +20,7 @@ OBSTACLE_DENSITY = 0.12
 TRAP_DENSITY = 0.04
 MUD_DENSITY = 0.10
 
-RESULTS_DIR = Path("results") / "window_size_experiment"
+RESULTS_DIR = Path("results") / "dqn" / "window_size_experiment"
 RESULTS_PATH = RESULTS_DIR / "results.json"
 
 

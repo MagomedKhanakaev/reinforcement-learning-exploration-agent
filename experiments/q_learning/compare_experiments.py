@@ -5,7 +5,7 @@ from typing import Sequence
 import matplotlib.pyplot as plt
 import numpy as np
 
-EXPERIMENTS_DIR = Path("results") / "environment_comparison"
+EXPERIMENTS_DIR = Path("results") / "q_learning" / "environment_comparison"
 
 OUTPUT_DIR = EXPERIMENTS_DIR / "comparisons"
 

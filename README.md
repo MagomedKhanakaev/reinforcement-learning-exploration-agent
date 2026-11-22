@@ -4,7 +4,7 @@ A grid-world reinforcement learning project built from scratch to study how a ta
 
 The task stays the same throughout the experiments: reach a fixed goal on a 15 × 15 map. The simple environment contains obstacles only, while the advanced version adds mud cells and traps. Both environments use the same seed and base obstacle layout, which makes the comparison easier to interpret.
 
-![Advanced grid environment](results/environment_comparison/advanced/environment.png)
+![Advanced grid environment](results/q_learning/environment_comparison/advanced/environment.png)
 
 ## Environment
 
@@ -60,7 +60,7 @@ Epsilon decreases during training. The curves below use a 100-episode moving ave
 
 The advanced environment is much less forgiving at the beginning of training. Random exploration leads to more collisions, longer episodes and repeated returns to the starting position after traps.
 
-![Reward comparison between the simple and advanced environments](results/environment_comparison/comparisons/reward_full.png)
+![Reward comparison between the simple and advanced environments](results/q_learning/environment_comparison/comparisons/reward_full.png)
 
 | Metric | Simple | Advanced |
 | --- | ---: | ---: |
@@ -74,13 +74,13 @@ Despite the large gap during exploration, both agents eventually learn a policy 
 
 On this map, the hazards mainly affect the learning process rather than the final route.
 
-![Episode length during early training](results/environment_comparison/comparisons/steps_zoom.png)
+![Episode length during early training](results/q_learning/environment_comparison/comparisons/steps_zoom.png)
 
 ### Learning rate
 
 The learning rate was tested with values 0.05, 0.10, 0.30 and 0.50 while keeping gamma fixed at 0.95, repeated on 4 fixed maps (mean ± standard deviation across maps).
 
-![Influence of the learning rate](results/hyperparameter_analysis/alpha/alpha_reward.png)
+![Influence of the learning rate](results/q_learning/hyperparameter_analysis/alpha/alpha_reward.png)
 
 All four values converge to essentially the same final reward on every map (77 to 79, within about 3 points of each other). Alpha = 0.10 is kept as a neutral baseline rather than presented as an optimal value.
 
@@ -88,7 +88,7 @@ All four values converge to essentially the same final reward on every map (77 t
 
 The discount factor was tested with values 0.80, 0.90, 0.95 and 0.99 while keeping alpha fixed at 0.10, on the same 4 maps.
 
-![Influence of the discount factor](results/hyperparameter_analysis/gamma/gamma_reward.png)
+![Influence of the discount factor](results/q_learning/hyperparameter_analysis/gamma/gamma_reward.png)
 
 Same pattern: all four values converge to essentially the same result, so gamma = 0.95 remains the default setting. Repeating the sweep across 4 different maps confirms this insensitivity is not an artifact of a single fixed layout.
 
@@ -175,9 +175,9 @@ Checked whether the maps that failed were simply harder: for every evaluation ma
 ```text
 agents/        Q-learning and DQN agents, action-selection logic
 environment/   Base grid world and advanced environment
-experiments/   Training, evaluation and comparison scripts
+experiments/   Training and evaluation scripts, split into q_learning/ and dqn/, plus the cross-agent comparison
 utils/         Generic helpers (frame stacking)
-results/       Configurations, metrics, Q-tables, DQN checkpoints and figures
+results/       Configurations, metrics, Q-tables, DQN checkpoints and figures, split into q_learning/ and dqn/
 ```
 
 ## Running the experiments
@@ -191,27 +191,27 @@ pip install -r requirements.txt
 Train the simple and advanced agents:
 
 ```bash
-python -m experiments.q_learning_training
+python -m experiments.q_learning.q_learning_training
 ```
 
 Generate the environment comparison figures:
 
 ```bash
-python -m experiments.compare_experiments
+python -m experiments.q_learning.compare_experiments
 ```
 
 Run the hyperparameter sweep (alpha and gamma, repeated across 4 fixed maps):
 
 ```bash
-python -m experiments.hyperparameter_experiments
+python -m experiments.q_learning.hyperparameter_experiments
 ```
 
 Each run saves its configuration, episode metrics, final evaluation, grid and Q-table. The comparison plots are generated from the saved results, so training does not need to be repeated to rebuild the figures.
 
-Train the DQN agent (saves a checkpoint every 100 episodes to `results/dqn_checkpoints/`):
+Train the DQN agent (saves a checkpoint every 100 episodes to `results/dqn/dqn_checkpoints/`):
 
 ```bash
-python -m experiments.DQN_training
+python -m experiments.dqn.DQN_training
 ```
 
 ## Next steps

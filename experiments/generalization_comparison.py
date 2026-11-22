@@ -9,7 +9,7 @@ import torch
 from agents.q_learning_agent import QLearningAgent
 from agents.DQN_agent import DQN_agent
 from environment.advanced_environment import AdvancedEnvironment
-from experiments.DQN_training import FRAME_DIM
+from experiments.dqn.DQN_training import FRAME_DIM
 from utils.frame_stack import FrameStack
 
 EVAL_SEEDS = list(range(101, 116))
@@ -19,8 +19,8 @@ TRAP_DENSITY = 0.04
 MUD_DENSITY = 0.10
 STACK_SIZE = 4
 
-Q_TABLE_PATH = "results/environment_comparison/advanced/q_table.pkl"
-DQN_CHECKPOINT_PATH = "results/dqn_checkpoints/policy_net_best.pth"
+Q_TABLE_PATH = "results/q_learning/environment_comparison/advanced/q_table.pkl"
+DQN_CHECKPOINT_PATH = "results/dqn/dqn_checkpoints/policy_net_best.pth"
 OUTPUT_DIR = Path("results/generalization_comparison")
 
 

@@ -4,7 +4,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-from experiments.q_learning_training import train
+from experiments.q_learning.q_learning_training import train
 from results.plots import moving_average
 
 MAP_SEEDS = [4, 10, 20, 30]
@@ -103,7 +103,7 @@ def plot_curves(curves_by_value, parameter_name, metric_name, ylabel, save_dir):
 
 
 def run_and_save(parameter_name, parameter_values, fixed_alpha, fixed_gamma):
-    save_dir = Path("results") / "hyperparameter_analysis" / parameter_name
+    save_dir = Path("results") / "q_learning" / "hyperparameter_analysis" / parameter_name
 
     curves_by_value = collect_curves(
         parameter_name=parameter_name,
