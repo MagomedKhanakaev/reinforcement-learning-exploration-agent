@@ -1,0 +1,74 @@
+[
+    {
+        "window_size": 3,
+        "training_seed": 4,
+        "solved_count": 15,
+        "total_maps": 15,
+        "mean_reward": -97.86666666666666,
+        "mean_steps": 96.33333333333333
+    },
+    {
+        "window_size": 3,
+        "training_seed": 104,
+        "solved_count": 14,
+        "total_maps": 15,
+        "mean_reward": -310.4,
+        "mean_steps": 182.8
+    },
+    {
+        "window_size": 3,
+        "training_seed": 204,
+        "solved_count": 14,
+        "total_maps": 15,
+        "mean_reward": -173.2,
+        "mean_steps": 147.4
+    },
+    {
+        "window_size": 5,
+        "training_seed": 4,
+        "solved_count": 14,
+        "total_maps": 15,
+        "mean_reward": -224.2,
+        "mean_steps": 186.53333333333333
+    },
+    {
+        "window_size": 5,
+        "training_seed": 104,
+        "solved_count": 15,
+        "total_maps": 15,
+        "mean_reward": -5.133333333333334,
+        "mean_steps": 62.13333333333333
+    },
+    {
+        "window_size": 5,
+        "training_seed": 204,
+        "solved_count": 13,
+        "total_maps": 15,
+        "mean_reward": -372.4,
+        "mean_steps": 246.13333333333333
+    },
+    {
+        "window_size": 7,
+        "training_seed": 4,
+        "solved_count": 13,
+        "total_maps": 15,
+        "mean_reward": -465.06666666666666,
+        "mean_steps": 292.8666666666667
+    },
+    {
+        "window_size": 7,
+        "training_seed": 104,
+        "solved_count": 15,
+        "total_maps": 15,
+        "mean_reward": -54.266666666666666,
+        "mean_steps": 86.6
+    },
+    {
+        "window_size": 7,
+        "training_seed": 204,
+        "solved_count": 12,
+        "total_maps": 15,
+        "mean_reward": -677.8666666666667,
+        "mean_steps": 409.46666666666664
+    }
+]

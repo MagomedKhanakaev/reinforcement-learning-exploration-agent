@@ -3,3 +3,7 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 *.pth
+cours_dqn.md
+theoretical_foundations.md
+profile.prof
+profile.txt

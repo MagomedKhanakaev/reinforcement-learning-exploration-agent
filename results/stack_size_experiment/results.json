@@ -1,0 +1,74 @@
+[
+    {
+        "stack_size": 1,
+        "training_seed": 4,
+        "solved_count": 13,
+        "total_maps": 15,
+        "mean_reward": -347.6666666666667,
+        "mean_steps": 241.6
+    },
+    {
+        "stack_size": 1,
+        "training_seed": 104,
+        "solved_count": 12,
+        "total_maps": 15,
+        "mean_reward": -397.53333333333336,
+        "mean_steps": 290.06666666666666
+    },
+    {
+        "stack_size": 1,
+        "training_seed": 204,
+        "solved_count": 13,
+        "total_maps": 15,
+        "mean_reward": -314.06666666666666,
+        "mean_steps": 193.73333333333332
+    },
+    {
+        "stack_size": 2,
+        "training_seed": 4,
+        "solved_count": 14,
+        "total_maps": 15,
+        "mean_reward": -375.6666666666667,
+        "mean_steps": 245.46666666666667
+    },
+    {
+        "stack_size": 2,
+        "training_seed": 104,
+        "solved_count": 14,
+        "total_maps": 15,
+        "mean_reward": -262.8666666666667,
+        "mean_steps": 164.46666666666667
+    },
+    {
+        "stack_size": 2,
+        "training_seed": 204,
+        "solved_count": 13,
+        "total_maps": 15,
+        "mean_reward": -312.1333333333333,
+        "mean_steps": 204.4
+    },
+    {
+        "stack_size": 4,
+        "training_seed": 4,
+        "solved_count": 15,
+        "total_maps": 15,
+        "mean_reward": -151.73333333333332,
+        "mean_steps": 147.4
+    },
+    {
+        "stack_size": 4,
+        "training_seed": 104,
+        "solved_count": 15,
+        "total_maps": 15,
+        "mean_reward": -151.6,
+        "mean_steps": 106.46666666666667
+    },
+    {
+        "stack_size": 4,
+        "training_seed": 204,
+        "solved_count": 12,
+        "total_maps": 15,
+        "mean_reward": -443.4,
+        "mean_steps": 289.8
+    }
+]

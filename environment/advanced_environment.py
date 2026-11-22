@@ -11,12 +11,14 @@ class AdvancedEnvironment(Environment):
         trap_density=0.05,
         mud_density=0.10,
         seed=None,
+        window_size=5,
     ):
         super().__init__(size, obstacle_density, seed)
         if obstacle_density + trap_density + mud_density > 1:
             raise ValueError("Total density is > 1")
         self.trap_density = trap_density
         self.mud_density = mud_density
+        self.window_size = window_size
 
         while True:
             self.create_grid()
@@ -56,7 +58,7 @@ class AdvancedEnvironment(Environment):
             if self.path_exists():
                 break
         self.current_position = self.start
-        return self.local_vision()
+        return self.local_vision(window_size=self.window_size)
 
     def step(self, action):
         if action not in self.actions:
@@ -139,7 +141,7 @@ class AdvancedEnvironment(Environment):
         elif self.count_steps >= self.max_steps:
             done = True
 
-        return self.local_vision(), reward, done
+        return self.local_vision(window_size=self.window_size), reward, done
 
     def render(self):
         display = np.full(self.grid.shape, ".", dtype="<U1")

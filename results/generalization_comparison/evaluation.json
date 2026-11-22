@@ -1,0 +1,197 @@
+{
+    "q_learning": {
+        "per_seed": [
+            {
+                "seed": 101,
+                "resolved": false,
+                "steps": 900,
+                "reward": -1862
+            },
+            {
+                "seed": 102,
+                "resolved": false,
+                "steps": 900,
+                "reward": -1934
+            },
+            {
+                "seed": 103,
+                "resolved": false,
+                "steps": 900,
+                "reward": -2262
+            },
+            {
+                "seed": 104,
+                "resolved": false,
+                "steps": 900,
+                "reward": -2352
+            },
+            {
+                "seed": 105,
+                "resolved": false,
+                "steps": 900,
+                "reward": -2260
+            },
+            {
+                "seed": 106,
+                "resolved": false,
+                "steps": 900,
+                "reward": -2456
+            },
+            {
+                "seed": 107,
+                "resolved": false,
+                "steps": 900,
+                "reward": -2446
+            },
+            {
+                "seed": 108,
+                "resolved": false,
+                "steps": 900,
+                "reward": -1629
+            },
+            {
+                "seed": 109,
+                "resolved": false,
+                "steps": 900,
+                "reward": -2585
+            },
+            {
+                "seed": 110,
+                "resolved": true,
+                "steps": 242,
+                "reward": -510
+            },
+            {
+                "seed": 111,
+                "resolved": false,
+                "steps": 900,
+                "reward": -2744
+            },
+            {
+                "seed": 112,
+                "resolved": false,
+                "steps": 900,
+                "reward": -2992
+            },
+            {
+                "seed": 113,
+                "resolved": false,
+                "steps": 900,
+                "reward": -2210
+            },
+            {
+                "seed": 114,
+                "resolved": false,
+                "steps": 900,
+                "reward": -2797
+            },
+            {
+                "seed": 115,
+                "resolved": false,
+                "steps": 900,
+                "reward": -2325
+            }
+        ],
+        "solved": 1,
+        "mean_reward": -2224.266666666667,
+        "mean_steps": 856.1333333333333,
+        "new_state_ratio": 0.0024918237034729793
+    },
+    "dqn": {
+        "per_seed": [
+            {
+                "seed": 101,
+                "resolved": true,
+                "steps": 311,
+                "reward": -479
+            },
+            {
+                "seed": 102,
+                "resolved": true,
+                "steps": 241,
+                "reward": -168
+            },
+            {
+                "seed": 103,
+                "resolved": true,
+                "steps": 26,
+                "reward": 75
+            },
+            {
+                "seed": 104,
+                "resolved": true,
+                "steps": 24,
+                "reward": 77
+            },
+            {
+                "seed": 105,
+                "resolved": true,
+                "steps": 20,
+                "reward": 81
+            },
+            {
+                "seed": 106,
+                "resolved": true,
+                "steps": 39,
+                "reward": 57
+            },
+            {
+                "seed": 107,
+                "resolved": true,
+                "steps": 303,
+                "reward": -340
+            },
+            {
+                "seed": 108,
+                "resolved": true,
+                "steps": 19,
+                "reward": 82
+            },
+            {
+                "seed": 109,
+                "resolved": true,
+                "steps": 73,
+                "reward": -12
+            },
+            {
+                "seed": 110,
+                "resolved": true,
+                "steps": 41,
+                "reward": 49
+            },
+            {
+                "seed": 111,
+                "resolved": true,
+                "steps": 53,
+                "reward": 14
+            },
+            {
+                "seed": 112,
+                "resolved": true,
+                "steps": 411,
+                "reward": -739
+            },
+            {
+                "seed": 113,
+                "resolved": true,
+                "steps": 32,
+                "reward": 46
+            },
+            {
+                "seed": 114,
+                "resolved": true,
+                "steps": 281,
+                "reward": -620
+            },
+            {
+                "seed": 115,
+                "resolved": true,
+                "steps": 64,
+                "reward": -39
+            }
+        ],
+        "solved": 15,
+        "mean_reward": -127.73333333333333,
+        "mean_steps": 129.2
+    }
+}
