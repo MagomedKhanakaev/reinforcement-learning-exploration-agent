@@ -1,0 +1,114 @@
+{
+    "pool_size": {
+        "1": {
+            "runs": 3,
+            "frozen_percent_mean": 62.22222222222222,
+            "frozen_percent_std": 20.608041101101563,
+            "new_percent_mean": 49.833333333333336,
+            "new_percent_std": 16.048537489614297,
+            "new_reward_mean": -1250.75,
+            "new_reward_std": 337.790276725071
+        },
+        "5": {
+            "runs": 3,
+            "frozen_percent_mean": 77.77777777777779,
+            "frozen_percent_std": 8.31479419283098,
+            "new_percent_mean": 64.16666666666667,
+            "new_percent_std": 8.605553762283725,
+            "new_reward_mean": -945.3783333333334,
+            "new_reward_std": 190.02369257250237
+        },
+        "10": {
+            "runs": 3,
+            "frozen_percent_mean": 88.8888888888889,
+            "frozen_percent_std": 8.31479419283098,
+            "new_percent_mean": 71.66666666666667,
+            "new_percent_std": 2.321398046197353,
+            "new_reward_mean": -780.8366666666667,
+            "new_reward_std": 63.25034707853827
+        },
+        "25": {
+            "runs": 3,
+            "frozen_percent_mean": 91.1111111111111,
+            "frozen_percent_std": 3.1426968052735402,
+            "new_percent_mean": 77.5,
+            "new_percent_std": 3.3416562759605704,
+            "new_reward_mean": -621.4483333333333,
+            "new_reward_std": 46.1999603775684
+        },
+        "50": {
+            "runs": 3,
+            "frozen_percent_mean": 95.55555555555554,
+            "frozen_percent_std": 3.142696805273547,
+            "new_percent_mean": 75.5,
+            "new_percent_std": 4.02077936060494,
+            "new_reward_mean": -677.845,
+            "new_reward_std": 101.45304932167721
+        }
+    },
+    "window_size": {
+        "3": {
+            "runs": 3,
+            "frozen_percent_mean": 95.55555555555554,
+            "frozen_percent_std": 3.142696805273547,
+            "new_percent_mean": 86.5,
+            "new_percent_std": 2.943920288775949,
+            "new_reward_mean": -429.7816666666667,
+            "new_reward_std": 76.15641495559576
+        },
+        "5": {
+            "runs": 3,
+            "frozen_percent_mean": 93.33333333333333,
+            "frozen_percent_std": 5.443310539518172,
+            "new_percent_mean": 79.16666666666667,
+            "new_percent_std": 2.8674417556808756,
+            "new_reward_mean": -586.6916666666666,
+            "new_reward_std": 58.812050399745644
+        },
+        "7": {
+            "runs": 3,
+            "frozen_percent_mean": 88.8888888888889,
+            "frozen_percent_std": 8.31479419283098,
+            "new_percent_mean": 73.83333333333333,
+            "new_percent_std": 1.9293061504650377,
+            "new_reward_mean": -743.6583333333333,
+            "new_reward_std": 22.38265710073068
+        }
+    },
+    "stack_size": {
+        "1": {
+            "runs": 3,
+            "frozen_percent_mean": 84.44444444444446,
+            "frozen_percent_std": 3.142696805273547,
+            "new_percent_mean": 65.66666666666667,
+            "new_percent_std": 5.864204028586394,
+            "new_reward_mean": -805.4966666666666,
+            "new_reward_std": 142.05290102243208
+        },
+        "2": {
+            "runs": 3,
+            "frozen_percent_mean": 91.1111111111111,
+            "frozen_percent_std": 3.1426968052735402,
+            "new_percent_mean": 74.5,
+            "new_percent_std": 7.2571803523590805,
+            "new_reward_mean": -693.8616666666667,
+            "new_reward_std": 121.42727400474004
+        },
+        "4": {
+            "runs": 3,
+            "frozen_percent_mean": 93.33333333333333,
+            "frozen_percent_std": 9.428090415820634,
+            "new_percent_mean": 78.33333333333333,
+            "new_percent_std": 2.094967514996089,
+            "new_reward_mean": -616.695,
+            "new_reward_std": 59.06643307892111
+        }
+    },
+    "q_learning": {
+        "new_solved": 12,
+        "new_total": 200,
+        "new_mean_reward": -2374.37,
+        "new_mean_steps": 868.56,
+        "unseen_state_ratio": 0.14107257990236713
+    }
+}

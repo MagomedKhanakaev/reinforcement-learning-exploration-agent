@@ -95,7 +95,7 @@
         "solved": 1,
         "mean_reward": -2224.266666666667,
         "mean_steps": 856.1333333333333,
-        "new_state_ratio": 0.0024918237034729793
+        "new_state_ratio": 0.13860769350568447
     },
     "dqn": {
         "per_seed": [

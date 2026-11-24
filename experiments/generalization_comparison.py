@@ -24,12 +24,17 @@ DQN_CHECKPOINT_PATH = "results/dqn/dqn_checkpoints/policy_net_best.pth"
 OUTPUT_DIR = Path("results/generalization_comparison")
 
 
-def evaluate_q_learning(q_table):
+def evaluate_q_learning(q_table, eval_seeds=EVAL_SEEDS):
     """Evalue une Q-table deja entrainee, en politique gloutonne, sur les
-    15 cartes gelees. Meme garde-fou anti-cycle que celui utilise pour le
-    DQN (positions recentes, escalade des actions, repli aleatoire)."""
+    cartes donnees (par defaut les 15 cartes gelees). Meme garde-fou
+    anti-cycle que celui utilise pour le DQN (positions recentes, escalade
+    des actions, repli aleatoire)."""
     agent = QLearningAgent(epsilon=0.0)
     agent.q_table = q_table
+
+    # verify_state_exists ajoute les etats inconnus a la Q-table pendant
+    # l'evaluation, donc on garde une copie des etats connus avant de commencer.
+    known_states = set(q_table.keys())
 
     revisit_window = 2 * SIZE
 
@@ -37,7 +42,7 @@ def evaluate_q_learning(q_table):
     new_state_count = 0
     total_state_count = 0
 
-    for seed in EVAL_SEEDS:
+    for seed in eval_seeds:
         env = AdvancedEnvironment(
             size=SIZE,
             obstacle_density=OBSTACLE_DENSITY,
@@ -57,7 +62,7 @@ def evaluate_q_learning(q_table):
         step_count = 0
 
         while not done and step_count < env.max_steps:
-            if state not in q_table:
+            if state not in known_states:
                 new_state_count += 1
             total_state_count += 1
             agent.verify_state_exists(state)
