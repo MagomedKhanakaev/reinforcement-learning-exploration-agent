@@ -6,12 +6,13 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-from matplotlib.colors import ListedColormap
+from matplotlib import patheffects
 
 from agents.DQN_agent import DQN_agent
 from environment.advanced_environment import AdvancedEnvironment
 from experiments.dqn.DQN_training import FRAME_DIM
 from utils.frame_stack import FrameStack
+from utils.render import draw_agent, draw_map, trail_points
 
 CHECKPOINT_PATH = "results/dqn/dqn_checkpoints/policy_net_best.pth"
 OUTPUT_DIR = Path("results") / "dqn" / "failure_analysis"
@@ -319,48 +320,25 @@ def plot_trajectory(result, category, output_path):
     grid = np.array(result["grid"])
     positions = result["positions"]
 
-    cell_colors = ListedColormap(["white", "black", "tab:red", "burlywood"])
-
     visits = np.zeros(grid.shape, dtype=int)
     for x, y in positions:
         visits[x, y] += 1
 
     fig, ax = plt.subplots(figsize=(7.5, 7.5))
-    ax.imshow(grid, cmap=cell_colors, vmin=0, vmax=3)
+    draw_map(ax, grid, result["start"], result["goal"])
 
-    # A trap sends the agent back to the start, so jumps are not drawn as moves.
-    for index in range(len(positions) - 1):
-        x1, y1 = positions[index]
-        x2, y2 = positions[index + 1]
-        distance = abs(x1 - x2) + abs(y1 - y2)
-        if distance == 1:
-            ax.plot([y1, y2], [x1, x2], color="tab:blue", linewidth=1.2, alpha=0.35)
+    # A trap sends the agent back to the start, so the line is cut there.
+    xs, ys = trail_points(positions, len(positions) - 1)
+    ax.plot(xs, ys, color=(0.95, 0.55, 0.10), linewidth=1.6, alpha=0.55, zorder=6)
 
+    # Number of visits on the cells the agent came back to many times.
+    outline = [patheffects.withStroke(linewidth=2.5, foreground="black")]
     for x in range(grid.shape[0]):
         for y in range(grid.shape[1]):
             if visits[x, y] >= 5:
-                ax.text(y, x, str(visits[x, y]), ha="center", va="center", fontsize=7, color="tab:blue")
+                ax.text(y + 0.5, x + 0.5, str(visits[x, y]), ha="center", va="center", fontsize=8, color="white", path_effects=outline, zorder=12)
 
-    start = result["start"]
-    goal = result["goal"]
-    ax.scatter(start[1], start[0], marker="s", s=140, color="tab:green", edgecolors="black", zorder=3)
-    ax.scatter(goal[1], goal[0], marker="*", s=280, color="gold", edgecolors="black", zorder=3)
-
-    size = grid.shape[0]
-    ax.set_xticks(np.arange(-0.5, size, 1), minor=True)
-    ax.set_yticks(np.arange(-0.5, size, 1), minor=True)
-    ax.grid(which="minor", color="lightgray", linewidth=0.5)
-    ax.set_xticks([])
-    ax.set_yticks([])
-
-    legend_items = [
-        plt.Rectangle((0, 0), 1, 1, facecolor="black", label="Obstacle"),
-        plt.Rectangle((0, 0), 1, 1, facecolor="tab:red", label="Trap"),
-        plt.Rectangle((0, 0), 1, 1, facecolor="burlywood", label="Mud"),
-        plt.Line2D([0], [0], marker="s", color="w", markerfacecolor="tab:green", markeredgecolor="black", markersize=10, label="Start"),
-        plt.Line2D([0], [0], marker="*", color="w", markerfacecolor="gold", markeredgecolor="black", markersize=14, label="Goal"),
-    ]
-    ax.legend(handles=legend_items, loc="upper center", bbox_to_anchor=(0.5, -0.01), ncol=5, fontsize=8, frameon=False)
+    draw_agent(ax, positions[-1])
 
     ax.set_title(
         f"Map seed {result['seed']}: {category}\n"
